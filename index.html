@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>$ whoami</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
@@ -14,21 +14,68 @@
     }
 
     :root {
-      --bg: #ffffff;
-      --fg: #000000;
-      --fg-dim: #0066cc;
-      --fg-subtle: #4444aa;
-      --accent: #0080ff;
-      --white: #000000;
-      --gray: #cccccc;
+      --bg-dark: #000000;
+      --fg-dark: #ffffff;
+      --bg-light: #ffffff;
+      --fg-light: #000000;
+      --toggle-bg: rgba(255,255,255,0.1);
+      --toggle-bg-light: rgba(0,0,0,0.1);
+      --toggle-fg: #fff;
+      --toggle-fg-light: #000;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--fg-dark);
+    }
+
+    body.light {
+      background: var(--bg-light);
+      color: var(--fg-light);
     }
 
     body {
       font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-      background: var(--bg);
-      color: var(--fg);
       line-height: 1.6;
       overflow-x: hidden;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* Minimal toggle button top-right */
+    #toggle-theme {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: var(--toggle-bg);
+      border: none;
+      border-radius: 12px;
+      width: 20px;
+      height: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.1s;
+      z-index: 10000;
+    }
+    body.light #toggle-theme {
+      background: var(--toggle-bg-light);
+    }
+
+    #toggle-theme:focus {
+      outline: 2px solid currentColor;
+    }
+
+    #toggle-icon {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--toggle-fg);
+      transition: background-color 0.1s;
+    }
+    body.light #toggle-icon {
+      background: var(--toggle-fg-light);
+      transform: translateX(0px);
     }
 
     .terminal {
@@ -36,10 +83,12 @@
       margin: 0 auto;
       padding: 20px;
       min-height: 100vh;
+      position: relative;
+      z-index: 10;
     }
 
     .prompt {
-      color: var(--fg-dim);
+      color: inherit;
       font-weight: 500;
     }
 
@@ -53,42 +102,45 @@
     }
 
     header {
-      margin: 60px 0 80px 0;
+      margin: 40px 0 0 0;
       text-align: center;
     }
 
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      text-shadow: 0 0 20px var(--fg);
+    h1, .subtitle , h3{
+      font-weight: 100;
+      text-shadow: 0 0 5px currentColor;
+    }
+
+    h3.glitch {
+      font-size: 1rem;
+      position: relative;
+      color: inherit;
     }
 
     .subtitle {
       font-size: 1.1rem;
-      color: var(--fg-dim);
+      opacity: 0.7;
       margin-bottom: 30px;
     }
 
     .ascii-art {
-      font-size: 0.7rem;
+      font-size: 1.2rem;
       line-height: 1;
-      color: var(--fg-subtle);
-      margin: 30px 0;
+      opacity: 0.8;
       white-space: pre;
+      margin-bottom: 5px;
+      color: inherit;
     }
 
     .section {
       margin: 50px 0;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.8s ease forwards;
+      transform: translateY(100px);
+      animation: fadeIn 0.15s ease forwards;
     }
 
-    .section:nth-child(2) { animation-delay: 0.2s; }
+    .section:nth-child(2) { animation-delay: 0.1s; }
     .section:nth-child(3) { animation-delay: 0.4s; }
-    .section:nth-child(4) { animation-delay: 0.6s; }
-    .section:nth-child(5) { animation-delay: 0.8s; }
 
     @keyframes fadeIn {
       to {
@@ -106,13 +158,13 @@
 
     .cmd::before {
       content: "$ ";
-      color: var(--accent);
+      color: currentColor;
       margin-right: 8px;
     }
 
     .output {
       margin-left: 16px;
-      color: var(--white);
+      color: inherit;
       font-weight: 300;
     }
 
@@ -123,9 +175,9 @@
     }
 
     a.project {
-      border: 1px solid var(--gray);
+      border: 1px solid currentColor;
       padding: 20px;
-      background: rgba(0, 255, 65, 0.02);
+      background: transparent;
       border-radius: 4px;
       transition: all 0.3s ease;
       position: relative;
@@ -134,32 +186,30 @@
     }
 
     a.project:hover {
-      border-color: var(--fg);
-      box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+      border-color: currentColor;
+      box-shadow: 0 0 10px currentColor;
       transform: translateX(4px);
     }
 
     .project::before {
       content: ">";
-      color: var(--accent);
       position: absolute;
       left: -15px;
       opacity: 0;
       transition: opacity 0.3s ease;
+      color: currentColor;
     }
 
-    .project:hover::before {
+    a.project:hover::before {
       opacity: 1;
     }
 
     .project h3 {
-      color: var(--fg);
       margin-bottom: 8px;
       font-size: 1.1rem;
     }
 
     .project p {
-      color: var(--white);
       font-size: 0.9rem;
       margin-bottom: 12px;
       font-weight: 300;
@@ -172,12 +222,12 @@
     }
 
     .tech span {
-      color: var(--fg-dim);
       font-size: 0.8rem;
       padding: 2px 6px;
-      border: 1px solid var(--fg-subtle);
+      border: 1px solid currentColor;
       border-radius: 2px;
-      background: rgba(0, 255, 65, 0.05);
+      background: transparent;
+      color: inherit;
     }
 
     .links {
@@ -186,32 +236,20 @@
     }
 
     .links a {
-      color: var(--fg);
+      color: inherit;
       text-decoration: none;
       margin: 0 20px;
-      position: relative;
       font-weight: 400;
+      position: relative;
     }
 
     .links a:hover {
-      color: var(--accent);
-      text-shadow: 0 0 8px var(--accent);
-    }
+  text-decoration: underline;
+  text-shadow: 0 0 6px currentColor;
+  font-weight: 300;
+  transform: scale(1.05);
+}
 
-    .links a::after {
-      content: "";
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
-
-    .links a:hover::after {
-      width: 100%;
-    }
 
     .skills-grid {
       display: grid;
@@ -221,26 +259,23 @@
     }
 
     .skill-item {
-      color: var(--white);
       font-size: 0.9rem;
       padding: 8px 0;
-      border-bottom: 1px solid var(--gray);
+      border-bottom: 1px solid currentColor;
+      color: inherit;
+      transition: color 0.3s ease, border-color 0.3s ease;
     }
 
     .skill-item:hover {
-      color: var(--fg);
-      border-color: var(--fg);
+      color: inherit;
+      border-color: currentColor;
     }
 
     footer {
       margin-top: 80px;
       text-align: center;
-      color: var(--fg-subtle);
       font-size: 0.8rem;
-    }
-
-    .glitch {
-      position: relative;
+      opacity: 0.6;
     }
 
     .glitch::before,
@@ -248,18 +283,18 @@
       position: absolute;
       top: 0;
       left: 0;
-      opacity: 0.8;
-      animation: glitch 2s infinite;
-    }
-
-    .glitch::before {
-      color: var(--accent);
+      opacity: 0.4;
+      animation: glitch 1s infinite;
+      color: currentColor;
       z-index: -1;
     }
 
+    .glitch::before {
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+
     .glitch::after {
-      color: var(--fg-dim);
-      z-index: -2;
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
     }
 
     @keyframes glitch {
@@ -272,17 +307,14 @@
 
     @media (max-width: 768px) {
       .terminal {
-        padding: 15px;
+        padding: 100px;
       }
-
-      h1 {
-        font-size: 2rem;
+      h3.glitch {
+        font-size: 0.8rem;
       }
-
       .ascii-art {
-        font-size: 0.5rem;
+        font-size: 1.2rem;
       }
-
       .links a {
         display: block;
         margin: 10px 0;
@@ -291,188 +323,218 @@
   </style>
 </head>
 
-<body>
-    <div class="terminal">
-        <header>
-            <div class="ascii-art">
-                                                
-                                                
+<body class="light">
+  <button id="toggle-theme" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
+    <div id="toggle-icon"></div>
+  </button>
+
+  <div class="terminal">
+    <header>
+      <div class="ascii-art">
   88bd8b,d88b ?88   d8P?88,  88P?88,  88P d8888b
   88P'`?8P'?8bd88   88  `?8bd8P' `?8bd8P'd8b_,dP
  d88  d88  88P?8(  d88  d8P?8b,  d8P?8b, 88b    
 d88' d88'  88b`?88P'?8bd8P' `?8bd8P' `?8b`?888P'
-                                                
-                                                 
-            </div>
-            <h3 class="glitch" data-text="muxxe_"><span class="cursor">_</span></h1>
-            <p class="subtitle">full-stack / machine learning / web3</p>
-        </header>
-
-        <div class="section">
-            <div class="cmd">cat about.txt</div>
-            <div class="output">
-                passionate about building secure, scalable systems.<br>
-            experiance crafting digital solutions that matter.<br>
-                currently obsessed with ML/AI and cybersecurity.
-            </div>
-        </div>
-
-<div class="section">
-  <div class="cmd">ls -la projects/</div>
-  <div class="projects">
-    
-    <a class="project" href="https://github.com/muxx3/tunnel" target="_blank">
-      <h3>tunnel</h3>
-      <p>CLI‑only P2P file sharing tool, built in Rust</p>
-      <div class="tech">
-        <span>Rust</span>
       </div>
-    </a>
-    
-    <a class="project" href="https://github.com/muxx3/longloads" target="_blank">
-      <h3>longloads</h3>
-      <p>Website for the longest loading bars (as well as daily/annual) for those times you need to wait. </p>
-      <div class="tech">
-        <span>TypeScript</span>
-        <span>JavaScript</span>
-        <span>CSS</span>
+      <p class="subtitle">full-stack / machine learning / web3</p>
+        <h3 class="glitch"><span class="cursor">_</span></h3>
+
+    </header>
+
+    <div class="section">
+      <div class="cmd">cat about.txt</div>
+      <div class="output">
+        passionate about building secure, scalable systems.<br />
+        experience crafting digital solutions that matter.<br />
+        currently obsessed with ML/AI and cybersecurity.
       </div>
-    </a>
-    
-    <a class="project" href="https://github.com/muxx3/commitgen" target="_blank">
-      <h3>commitGen</h3>
-      <p>Simple Node.js script that generates artificial commit history to paint the GitHub contribution graph</p>
-      <div class="tech">
-        <span>JavaScript</span>
-      </div>
-    </a>
-    
-    <a class="project" href="https://github.com/muxx3/ripsync" target="_blank">
-      <h3>ripsync</h3>
-      <p>CLI tool for hosting an https P2P file‑sharing webserver</p>
-      <div class="tech">
-        <span>Rust</span>
-        <span>TypeScript</span>
-        <span>JavaScript</span>
-        <span>Shell</span>
-        <span>CSS</span>
-      </div>
-    </a>
-
-  </div>
-</div>
-
-<br>
-   <div class="section">
-  <div class="cmd">grep -r "skills" /home/dev/</div>
-  <div class="skills-grid">
-    <div class="skill-item">Rust • TypeScript • Python</div>
-    <div class="skill-item">Bun • Node.js • Tailwind</div>
-    <div class="skill-item">MySQL • Docker • Cloudflare</div>
-    <div class="skill-item">AWS • GCP • Azure</div>
-    <div class="skill-item">PyTorch • Cryptography</div>
-    <div class="skill-item">Neovim • tmux • Git</div>
-  </div>
-</div>
-        <br>
-
-        <div class="section">
-            <div class="cmd">whoami <span class="cursor">█</span></div>
-            <div class="links">
-                
-                <a href="mailto:muxxe.dev@gmail.com">email</a>
-                <a href="https://github.com/muxx3" target="_blank">github</a>
-                <a href="https://x.com/muxxe_" target="_blank">X</a>
-            </div>
-        </div>
-
-        <footer>
-            <div class="cmd" style="justify-content: center; font-size: 0.8rem;">
-                <span class="prompt">root@portfolio:~#</span> 
-                <span style="margin-left: 8px;">uptime: ∞ days</span>
-            </div>
-        </footer>
     </div>
 
-    <script>
-        // Terminal typing effect for title
-        const title = document.querySelector('h3');
-        const cursor = document.querySelector('.cursor');
-        const originalText = 'welcome';
-        let index = 0;
-        
-        title.innerHTML = '<span class="cursor">_</span>';
-        
-        function typeWriter() {
-            if (index < originalText.length) {
-                const currentText = originalText.slice(0, index + 1);
-                title.innerHTML = currentText + '<span class="cursor">_</span>';
-                title.setAttribute('data-text', currentText);
-                index++;
-                setTimeout(typeWriter, 150);
-            } else {
-                title.innerHTML = originalText + '<span class="cursor">_</span>';
-                title.setAttribute(originalText);
-            }
+    <div class="section">
+      <div class="cmd">ls -la projects/</div>
+      <div class="projects">
+        <a class="project" href="https://github.com/muxx3/tunnel" target="_blank">
+          <h3>tunnel</h3>
+          <p>CLI‑only P2P file sharing tool, built in Rust</p>
+          <div class="tech">
+            <span>Rust</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://github.com/muxx3/longloads" target="_blank">
+          <h3>longloads</h3>
+          <p>Website for the longest loading bars (as well as daily/annual) for those times you need to wait.</p>
+          <div class="tech">
+            <span>TypeScript</span>
+            <span>JavaScript</span>
+            <span>CSS</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://github.com/muxx3/commitgen" target="_blank">
+          <h3>commitGen</h3>
+          <p>Simple Node.js script that generates artificial commit history to paint the GitHub contribution graph</p>
+          <div class="tech">
+            <span>JavaScript</span>
+          </div>
+        </a>
+
+        <a class="project" href="https://github.com/muxx3/ripsync" target="_blank">
+          <h3>ripsync</h3>
+          <p>CLI tool for hosting an https P2P file‑sharing webserver</p>
+          <div class="tech">
+            <span>Rust</span>
+            <span>TypeScript</span>
+            <span>JavaScript</span>
+            <span>Shell</span>
+            <span>CSS</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="section">
+      <div class="cmd">grep -r "skills" /home/dev/</div>
+      <div class="skills-grid">
+        <div class="skill-item">Rust • TypeScript • Python</div>
+        <div class="skill-item">Bun • Node.js • Tailwind</div>
+        <div class="skill-item">MySQL • Docker • Cloudflare</div>
+        <div class="skill-item">AWS • GCP • Azure</div>
+        <div class="skill-item">PyTorch • Cryptography</div>
+        <div class="skill-item">Neovim • tmux • Git</div>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="section">
+      <div class="cmd">whoami <span class="cursor">█</span></div>
+      <div class="links">
+        <a href="mailto:muxxe.dev@gmail.com">email</a>
+        <a href="https://github.com/muxx3" target="_blank">github</a>
+        <a href="https://x.com/muxxe_" target="_blank">X</a>
+      </div>
+    </div>
+
+    <footer>
+      <div
+        class="cmd"
+        style="justify-content: center; font-size: 0.8rem;"
+      >
+        <span class="prompt">root@portfolio:~#</span>
+        <span style="margin-left: 8px;">uptime: ∞ days</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Terminal typing effect for title
+    const title = document.querySelector('h3.glitch');
+    const cursor = document.querySelector('.cursor');
+    const originalText = 'welcome';
+    let index = 0;
+
+    title.innerHTML = '<span class="cursor">_</span>';
+
+    function typeWriter() {
+      if (index < originalText.length) {
+        const currentText = originalText.slice(0, index + 1);
+        title.innerHTML = currentText + '<span class="cursor">_</span>';
+        title.setAttribute('data-text', currentText);
+        index++;
+        setTimeout(typeWriter, 75);
+      } else {
+        title.innerHTML = originalText + '<span class="cursor">_</span>';
+        title.setAttribute(originalText);
+      }
+    }
+
+    setTimeout(typeWriter, 1000);
+
+    // Matrix rain effect with support for dark/light mode color scheme
+    let matrixInterval;
+    let canvas, ctx;
+    let drops = [];
+
+    function createMatrixRain() {
+      if (canvas) {
+        window.removeEventListener('resize', resizeCanvas);
+        clearInterval(matrixInterval);
+        canvas.remove();
+      }
+
+      canvas = document.createElement('canvas');
+      ctx = canvas.getContext('2d');
+
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '-1';
+      canvas.style.opacity = document.body.classList.contains('dark') ? '0.18' : '0.12';
+
+      document.body.appendChild(canvas);
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / 20);
+        drops = [];
+        for (let i = 0; i < columns; i++) {
+          drops[i] = 1;
         }
-        
-        // Start typing effect after page load
-        setTimeout(typeWriter, 1000);
-        
-        function createMatrixRain() {
-            const chars = '01';
-            const drops = [];
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            canvas.style.position = 'fixed';
-            canvas.style.top = '0';
-            canvas.style.left = '0';
-            canvas.style.width = '100%';
-            canvas.style.height = '100%';
-            canvas.style.pointerEvents = 'none';
-            canvas.style.zIndex = '-1';
-            canvas.style.opacity = '0.18';
-            
-            document.body.appendChild(canvas);
-            
-            function resize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                
-                const columns = Math.floor(canvas.width / 20);
-                drops.length = 0;
-                
-                for (let i = 0; i < columns; i++) {
-                    drops[i] = 1;
-                }
-            }
-            
-            function draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.fillStyle = '#0066cc';
-                ctx.font = '15px JetBrains Mono';
-                
-                for (let i = 0; i < drops.length; i++) {
-                    const text = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillText(text, i * 20, drops[i] * 20);
-                    
-                    if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
-            }
-            
-            resize();
-            window.addEventListener('resize', resize);
-            setInterval(draw, 35);
+      }
+
+      function draw() {
+        if (document.body.classList.contains('dark')) {
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#fff';
+        } else {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = '#000';
         }
-        
-        // Start matrix effect
-        setTimeout(createMatrixRain, 2000);
-    </script>
+
+        ctx.font = '15px JetBrains Mono';
+        const chars = 'muxxe';
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillText(text, i * 20, drops[i] * 20);
+
+          if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      matrixInterval = setInterval(draw, 35);
+    }
+
+    window.addEventListener('load', () => {
+      createMatrixRain();
+    });
+
+    const toggleBtn = document.getElementById('toggle-theme');
+    toggleBtn.addEventListener('click', () => {
+      if (document.body.classList.contains('dark')) {
+        document.body.classList.remove('dark');
+        document.body.classList.add('light');
+      } else {
+        document.body.classList.remove('light');
+        document.body.classList.add('dark');
+      }
+      createMatrixRain();
+    });
+  </script>
 </body>
 </html>
+
