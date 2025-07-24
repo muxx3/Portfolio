@@ -1,391 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title> muxxe_</title>
-  <link rel="icon" href="/favicon/dev_ico.ico" type="image/x-icon" />
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title> muxxe_</title>
+        <link rel="icon" href="/favicon/dev_ico.ico" type="image/x-icon" />
+        <style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
     :root {
-      --bg-dark: #000000;
-      --fg-dark: #ffffff;
-      --bg-light: #ffffff;
-      --fg-light: #000000;
-      --toggle-bg: rgba(255,255,255,0.1);
-      --toggle-bg-light: rgba(0,0,0,0.1);
-      --toggle-fg: #fff;
-      --toggle-fg-light: #000;
-      --accent: currentColor;
+        --bg-dark: #000000;
+        --fg-dark: #ffffff;
+        --bg-light: #ffffff;
+        --fg-light: #000000;
+        --toggle-bg: rgba(255,255,255,0.1);
+        --toggle-bg-light: rgba(0,0,0,0.1);
+        --toggle-fg: #fff;
+        --toggle-fg-light: #000;
+        --accent: currentColor;
     }
 
     body.dark {
-      background: var(--bg-dark);
-      color: var(--fg-dark);
+        background: var(--bg-dark);
+        color: var(--fg-dark);
     }
 
     body.light {
-      background: var(--bg-light);
-      color: var(--fg-light);
+        background: var(--bg-light);
+        color: var(--fg-light);
     }
 
     body {
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1.6;
-      overflow-x: hidden;
-      transition: background-color 0.4s ease, color 0.4s ease;
+        font-family: 'JetBrains Mono', monospace;
+        line-height: 1.6;
+        overflow-x: hidden;
+        transition: background-color 0.4s ease, color 0.4s ease;
     }
 
     /* Toggle theme button */
     #toggle-theme {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      background: var(--toggle-bg);
-      border: none;
-      border-radius: 12px;
-      width: 20px;
-      height: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.1s;
-      z-index: 10000;
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        background: var(--toggle-bg);
+        border: none;
+        border-radius: 12px;
+        width: 20px;
+        height: 24px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.1s;
+        z-index: 10000;
     }
     body.light #toggle-theme {
-      background: var(--toggle-bg-light);
+        background: var(--toggle-bg-light);
     }
 
     #toggle-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--toggle-fg);
-      transition: background-color 0.1s;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--toggle-fg);
+        transition: background-color 0.1s;
     }
     body.light #toggle-icon {
-      background: var(--toggle-fg-light);
-      transform: translateX(0px);
+        background: var(--toggle-fg-light);
+        transform: translateX(0px);
     }
 
     .terminal {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      min-height: 100vh;
-      position: relative;
-      z-index: 10;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 10;
     }
 
     .cursor {
-      animation: blink 1s infinite;
+        animation: blink 1s infinite;
     }
     @keyframes blink {
-      0%,50% { opacity: 1; }
-      51%,100% { opacity: 0; }
+        0%,50% { opacity: 1; }
+        51%,100% { opacity: 0; }
     }
 
     header {
-      margin: 40px 0 0;
-      text-align: center;
+        margin: 40px 0 0;
+        text-align: center;
     }
 
     h3.glitch {
-      font-weight: 550;
-      font-size: 1rem;
-      position: relative;
+        font-weight: 550;
+        font-size: 1rem;
+        position: relative;
     }
 
     .subtitle {
-      font-size: 1.1rem;
-      opacity: 0.7;
-      margin-bottom: 30px;
+        font-size: 1.1rem;
+        opacity: 0.7;
+        margin-bottom: 30px;
     }
 
     .ascii-art {
-      font-size: 0.85rem;
-      line-height: 1;
-      opacity: 0.8;
-      white-space: pre;
-      margin-bottom: 5px;
-      color: inherit;
+        font-size: 0.85rem;
+        line-height: 1;
+        opacity: 0.8;
+        white-space: pre;
+        text-align: center;
+        margin-bottom: 5px;
+        color: inherit;
+    }
+
+    .pink-link {
+        color: hotpink;
+        text-decoration: none;
+    }
+
+    .pink-link:hover {
+        text-decoration: underline;
     }
 
     .section {
-      margin: 50px 0;
-      opacity: 0;
-      transform: translateY(100px);
-      animation: fadeIn 0.15s ease forwards;
+        margin: 50px 0;
+        opacity: 0;
+        transform: translateY(100px);
+        animation: fadeIn 0.15s ease forwards;
     }
     .section:nth-child(2) { animation-delay: 0.1s; }
     .section:nth-child(3) { animation-delay: 0.4s; }
 
     @keyframes fadeIn {
-      to { opacity: 1; transform: translateY(0); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .cmd {
-      display: flex;
-      align-items: center;
-      margin: 20px 0;
-      font-weight: 500;
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        font-weight: 500;
     }
     .cmd::before {
-      content: "$ ";
-      color: currentColor;
-      margin-right: 8px;
+        content: "$ ";
+        color: currentColor;
+        margin-right: 8px;
     }
     .output {
-      margin-left: 16px;
-      color: inherit;
-      font-weight: 300;
+        margin-left: 16px;
+        color: inherit;
+        font-weight: 300;
     }
 
     .projects {
-      display: grid;
-      gap: 20px;
-      margin-top: 20px;
+        display: grid;
+        gap: 20px;
+        margin-top: 20px;
     }
     a.project {
-      border: 0px solid currentColor;
-      padding: 20px;
-      border-radius: 13px;
-      transition: all 0.1s ease;
-      position: relative;
-      color: inherit;
-      text-decoration: none;
+        border: 0px solid currentColor;
+        padding: 20px;
+        border-radius: 13px;
+        transition: all 0.1s ease;
+        position: relative;
+        color: inherit;
+        text-decoration: none;
     }
     a.project:hover {
-      border-color: currentColor;
-      box-shadow: 0 0 0 currentColor;
-      transform: translateX(4px);
+        border-color: currentColor;
+        box-shadow: 0 0 0px currentColor;
+        transform: translateX(4px);
     }
     .project::before {
-      content: ">";
-      position: absolute;
-      left: -15px;
-      opacity: 0;
-      transition: opacity 0.1s ease;
-      color: currentColor;
+        content: ">";
+        position: absolute;
+        left: -15px;
+        opacity: 0;
+        transition: opacity 0.1s ease;
+        color: currentColor;
     }
     a.project:hover::before {
-      opacity: 1;
+        opacity: 1;
     }
 
     .links {
-      margin-top: 30px;
-      text-align: center;
+        margin-top: 30px;
+        text-align: center;
     }
     .links a {
-      color: inherit;
-      text-decoration: none;
-      margin: 0 20px;
-      font-weight: 400;
-      position: relative;
-      display: inline-block;
-      transition: transform 0.3s ease;
+        color: inherit;
+        text-decoration: none;
+        margin: 0 20px;
+        font-weight: 400;
+        position: relative;
+        display: inline-block;
+        transition: transform 0.3s ease;
     }
     .links a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -2px;
-      width: 100%;
-      height: 1px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s ease;
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 1px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s ease;
     }
     .links a:hover::after {
-      transform: scaleX(1);
+        transform: scaleX(1);
     }
     .links a:hover {
-      transform: translateY(-1px);
+        transform: translateY(-1px);
     }
 
     .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
     }
     .skill-item {
-      font-size: 0.9rem;
-      padding: 8px 0;
-      border-bottom: 1px solid currentColor;
-      color: inherit;
-      transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+        font-size: 0.9rem;
+        padding: 8px 0;
+        border-bottom: 1px solid currentColor;
+        color: inherit;
+        transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
     }
     .skill-item:hover {
-      transform: translateY(-3px);
-      border-color: currentColor;
+        transform: translateY(-3px);
+        border-color: currentColor;
     }
 
     footer {
-      margin-top: 80px;
-      text-align: center;
-      font-size: 0.8rem;
-      opacity: 0.6;
+        margin-top: 80px;
+        text-align: center;
+        font-size: 0.8rem;
+        opacity: 0.6;
     }
-  </style>
-</head>
+        </style>
+    </head>
 
-<body class="dark">
-  <button id="toggle-theme" aria-label="Toggle light/dark mode">
-    <div id="toggle-icon"></div>
-  </button>
+    <body class="dark">
+        <button id="toggle-theme" aria-label="Toggle light/dark mode">
+            <div id="toggle-icon"></div>
+        </button>
 
-  <div class="terminal">
-    <header>
-      <div class="ascii-art">
-  88bd8b,d88b ?88   d8P?88,  88P?88,  88P d8888b
-  88P'`?8P'?8bd88   88  `?8bd8P' `?8bd8P'd8b_,dP
- d88  d88  88P?8(  d88  d8P?8b,  d8P?8b, 88b    
+        <div class="terminal">
+            <header>
+                <div class="ascii-art">
+88bd8b,d88b ?88   d8P?88,  88P?88,  88P d8888b
+88P'`?8P'?8bd88   88  `?8bd8P' `?8bd8P'd8b_,dP
+d88  d88  88P?8(  d88  d8P?8b,  d8P?8b, 88b    
 d88' d88'  88b`?88P'?8bd8P' `?8bd8P' `?8b`?888P'
-      </div>
-      <p class="subtitle">full-stack / machine learning / web3</p>
-      <h3 class="glitch"><span class="cursor">_</span></h3>
-    </header>
+                </div>
+                <p class="subtitle">full-stack / machine learning / web3</p>
+                <h3 class="glitch"><span class="cursor">_</span></h3>
+            </header>
 
-    <div class="section">
-      <div class="cmd">cat about.txt</div>
-      <div class="output">
-        passionate about building secure, scalable systems.<br/>
-        experience crafting digital solutions that matter.<br/>
-        currently obsessed with ML/AI and cybersecurity.
-      </div>
-    </div>
+            <div class="section">
+                <div class="cmd">cat about.txt</div>
+                <div class="output">
+                    homemade dev working on <a href="https://muxxe.dev/exb" class="pink-link" target="_blank">eXB</a><br>
+                    passionate about building secure, scalable systems.<br/>
+                    experience crafting digital solutions that matter.<br/>
+                    currently obsessed with ML/AI and cybersecurity.
+                </div>
+            </div>
 
-    <div class="section">
-      <div class="cmd">ls -la projects/</div>
-      <div class="projects">
-        <a class="project" href="https://github.com/muxx3/tunnel" target="_blank">
-          <h3>tunnel</h3>
-          <p>CLI‑only P2P file sharing tool, built in Rust</p>
-        </a>
-        <a class="project" href="https://github.com/muxx3/longloads" target="_blank">
-          <h3>longloads</h3>
-          <p>Website for the longest loading bars (as well as daily/annual) for those times you need to wait</p>
-        </a>
-        <a class="project" href="https://github.com/muxx3/commitgen" target="_blank">
-          <h3>commitGen</h3>
-          <p>Node.js script that generates artificial commit history</p>
-        </a>
-        <a class="project" href="https://github.com/muxx3/ripsync" target="_blank">
-          <h3>ripsync</h3>
-          <p>CLI tool for hosting an HTTPS P2P webserver</p>
-        </a>
-      </div>
-    </div>
+            <div class="section">
+                <div class="cmd">ls -la projects/</div>
+                <div class="projects">
+                    <a class="project" href="https://github.com/muxx3/tunnel" target="_blank">
+                        <h3>tunnel</h3>
+                        <p>CLI‑only P2P file sharing tool, built in Rust</p>
+                    </a>
+                    <a class="project" href="https://github.com/muxx3/longloads" target="_blank">
+                        <h3>longloads</h3>
+                        <p>Website for the longest loading bars (as well as daily/annual) for those times you need to wait</p>
+                    </a>
+                    <a class="project" href="https://github.com/muxx3/commitgen" target="_blank">
+                        <h3>commitGen</h3>
+                        <p>Node.js script that generates artificial commit history</p>
+                    </a>
+                    <a class="project" href="https://github.com/muxx3/ripsync" target="_blank">
+                        <h3>ripsync</h3>
+                        <p>CLI tool for hosting an HTTPS P2P webserver</p>
+                    </a>
+                </div>
+            </div>
 
-    <div class="section">
-      <div class="cmd">grep -r "skills" /home/dev/</div>
-      <div class="skills-grid">
-        <div class="skill-item">Rust • TypeScript • Python</div>
-        <div class="skill-item">Bun • Node.js • Tailwind</div>
-        <div class="skill-item">MySQL • Docker • Cloudflare</div>
-        <div class="skill-item">AWS • GCP • Azure</div>
-        <div class="skill-item">PyTorch • Cryptography</div>
-        <div class="skill-item">Neovim • tmux • Git</div>
-      </div>
-    </div>
+            <div class="section">
+                <div class="cmd">grep -r "skills" /home/dev/</div>
+                <div class="skills-grid">
+                    <div class="skill-item">Rust • TypeScript • Python</div>
+                    <div class="skill-item">Bun • Node.js • Tailwind</div>
+                    <div class="skill-item">MySQL • Docker • Cloudflare</div>
+                    <div class="skill-item">AWS • GCP • Azure</div>
+                    <div class="skill-item">PyTorch • Cryptography</div>
+                    <div class="skill-item">Neovim • tmux • Git</div>
+                </div>
+            </div>
 
-    <div class="section">
-      <div class="cmd">whoami <span class="cursor">█</span></div>
-      <div class="links">
-        <a href="mailto:muxxe.dev@gmail.com">email</a>
-        <a href="https://github.com/muxx3" target="_blank">github</a>
-        <a href="https://x.com/muxxe_" target="_blank">X</a>
-      </div>
-    </div>
+            <div class="section">
+                <div class="cmd">whoami <span class="cursor">█</span></div>
+                <div class="links">
+                    <a href="mailto:muxxe.dev@gmail.com">email</a>
+                    <a href="https://github.com/muxx3" target="_blank">github</a>
+                    <a href="https://x.com/muxxe_" target="_blank">X</a>
+                </div>
+            </div>
 
-    <footer>
-      <div class="cmd" style="justify-content:center; font-size:0.8rem;">
-        <span>root@portfolio:~#</span>
-        <span style="margin-left:8px;">uptime: ∞ days</span>
-      </div>
-    </footer>
-  </div>
+            <footer>
+                <div class="cmd" style="justify-content:center; font-size:0.8rem;">
+                    <span>root@portfolio:~#</span>
+                    <span style="margin-left:8px;">uptime: ∞ days</span>
+                </div>
+            </footer>
+        </div>
 
-  <script>
-    // typing effect
-    const title = document.querySelector('h3.glitch');
-    const originalText = 'welcome';
-    let idx = 0;
+        <script>
+            // typing effect
+            const title = document.querySelector('h3.glitch');
+            const originalText = 'welcome';
+            let idx = 0;
 
-    function typeWriter() {
-      if (idx < originalText.length) {
-        title.innerHTML = originalText.slice(0, idx+1) + '<span class="cursor">_</span>';
-        title.setAttribute('data-text', originalText.slice(0, idx+1));
-        idx++;
-        setTimeout(typeWriter, 75);
-      } else {
-        title.innerHTML = originalText + '<span class="cursor">_</span>';
-      }
-    }
-    setTimeout(typeWriter, 500);
+            function typeWriter() {
+                if (idx < originalText.length) {
+                    title.innerHTML = originalText.slice(0, idx+1) + '<span class="cursor">_</span>';
+                    title.setAttribute('data-text', originalText.slice(0, idx+1));
+                    idx++;
+                    setTimeout(typeWriter, 75);
+                } else {
+                    title.innerHTML = originalText + '<span class="cursor">_</span>';
+                }
+            }
+            setTimeout(typeWriter, 500);
 
-    // matrix rain effect
-    let matrixInterval, canvas, ctx, drops = [];
-    function createMatrixRain() {
-      if (canvas) {
-        window.removeEventListener('resize', resizeCanvas);
-        clearInterval(matrixInterval);
-        canvas.remove();
-      }
-      canvas = document.createElement('canvas');
-      ctx = canvas.getContext('2d');
-      canvas.style.position = 'fixed';
-      canvas.style.top = '0';
-      canvas.style.left = '0';
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      canvas.style.pointerEvents = 'none';
-      canvas.style.zIndex = '-1';
-      canvas.style.opacity = document.body.classList.contains('dark') ? '0.14' : '0.12';
-      document.body.appendChild(canvas);
+            // matrix rain effect
+            let matrixInterval, canvas, ctx, drops = [];
+            function createMatrixRain() {
+                if (canvas) {
+                    window.removeEventListener('resize', resizeCanvas);
+                    clearInterval(matrixInterval);
+                    canvas.remove();
+                }
+                canvas = document.createElement('canvas');
+                ctx = canvas.getContext('2d');
+                canvas.style.position = 'fixed';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.pointerEvents = 'none';
+                canvas.style.zIndex = '-1';
+                canvas.style.opacity = document.body.classList.contains('dark') ? '0.14' : '0.12';
+                document.body.appendChild(canvas);
 
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        drops = Array(Math.floor(canvas.width / 20)).fill(1);
-      }
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                    drops = Array(Math.floor(canvas.width / 20)).fill(1);
+                }
 
-      function draw() {
-        ctx.fillStyle = document.body.classList.contains('dark') ?
-          'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = document.body.classList.contains('dark') ? '#fff' : '#000';
-        ctx.font = '15px JetBrains Mono';
-        for (let i = 0; i < drops.length; i++) {
-          const text = 'muxxe'[Math.floor(Math.random() * 5)];
-          ctx.fillText(text, i*20, drops[i]*20);
-          if (drops[i]*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
-        }
-      }
+                function draw() {
+                    ctx.fillStyle = document.body.classList.contains('dark') ?
+                        'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+                    ctx.fillRect(0,0,canvas.width,canvas.height);
+                    ctx.fillStyle = document.body.classList.contains('dark') ? '#fff' : '#000';
+                    ctx.font = '15px JetBrains Mono';
+                    for (let i = 0; i < drops.length; i++) {
+                        const text = 'muxxe'[Math.floor(Math.random() * 5)];
+                        ctx.fillText(text, i*20, drops[i]*20);
+                        if (drops[i]*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                        drops[i]++;
+                    }
+                }
 
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-      matrixInterval = setInterval(draw, 35);
-    }
+                window.addEventListener('resize', resizeCanvas);
+                resizeCanvas();
+                matrixInterval = setInterval(draw, 35);
+            }
 
-    window.addEventListener('load', createMatrixRain);
-    document.getElementById('toggle-theme').addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      document.body.classList.toggle('light');
-      createMatrixRain();
-    });
-  </script>
-</body>
+            window.addEventListener('load', createMatrixRain);
+            document.getElementById('toggle-theme').addEventListener('click', () => {
+                document.body.classList.toggle('dark');
+                document.body.classList.toggle('light');
+                createMatrixRain();
+            });
+        </script>
+    </body>
 </html>
 
