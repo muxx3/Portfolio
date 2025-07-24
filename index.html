@@ -43,7 +43,6 @@
         transition: background-color 0.4s ease, color 0.4s ease;
     }
 
-    /* Toggle theme button */
     #toggle-theme {
         position: fixed;
         top: 12px;
@@ -78,11 +77,13 @@
 
     .terminal {
         max-width: 900px;
+        width: 100%;
         margin: 0 auto;
-        padding: 20px;
+        padding: 20px 15px;
         min-height: 100vh;
         position: relative;
         z-index: 10;
+        box-sizing: border-box;
     }
 
     .cursor {

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link rel="icon" href="/favicon/exb.png" type="image/x-icon" />
         <title>eXB - Building</title>
 
@@ -15,19 +15,18 @@
     padding: 0;
 }
 
-    body {
-        background-color: white;
-        color: black;
-        font-family: 'JetBrains Mono', monospace;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        overflow: hidden;
-        position: relative;
-    }
-
+body {
+    background-color: white;
+    color: black;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow-y: auto;
+    position: relative;
+}
     #logo {
         width: 120px;
         height: auto;
@@ -41,7 +40,7 @@
         border-radius: 3px;
         overflow: hidden;
         margin-bottom: 20px;
-        visibility: hidden; /* Start hidden until button pressed */
+        visibility: hidden;
     }
 
     .loading-fill {
@@ -87,13 +86,21 @@
         user-select: none;
         transition: background-color 0.3s, color 0.3s;
         margin-bottom: 20px;
-    }
-    #downloadBtn:hover {
-        background-color: black;
-        color: white;
+
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        color: black;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    /* Donate link styling */
+    #downloadBtn:hover,
+    #downloadBtn:focus,
+    #downloadBtn:active {
+        background-color: black;
+        color: white;
+        outline: none;
+    }
     #donateLink {
         margin-top: 80px; 
         font-family: 'JetBrains Mono', monospace;
@@ -137,7 +144,7 @@
         </div>
 
         <div class="fail-message" id="failMessage">
-            sorry, were having difficulties downloading <br> this innovation. try reloading or come back later.
+            sorry, we're having difficulties downloading <br> this amazing product. try reloading or come back later.
         </div>
 
         <div class="reload-icon" id="reloadIcon">⟳</div>
@@ -179,18 +186,17 @@
                 function startLoadingBar() {
                     resetUI();
 
-                    const target = getRandomProgress(); // Random target %
-                    const duration = getRandomDuration(); // Random time
+                    const target = getRandomProgress();
+                    const duration = getRandomDuration();
 
                     loadingFill.style.transition = `width ${duration}s ease-in-out`;
                     loadingFill.style.width = `${target}%`;
 
                     setTimeout(() => {
-                        // Hide the bar after fill
                         loadingContainer.style.visibility = 'hidden';
                         failMessage.style.display = 'block';
                         reloadIcon.style.display = 'block';
-                    }, duration * 1000 + 500); // give a small buffer
+                    }, duration * 1000 + 500);
                 }
 
                 reloadIcon.addEventListener('click', () => {
@@ -200,11 +206,10 @@
                 });
 
                 downloadBtn.addEventListener('click', () => {
-                    downloadBtn.style.display = 'none'; // hide button after click
+                    downloadBtn.style.display = 'none';
                     startLoadingBar();
                 });
 
-                // On page load, show button and hide loading UI
                 window.onload = () => {
                     downloadBtn.style.display = 'inline-block';
                     loadingContainer.style.visibility = 'hidden';
