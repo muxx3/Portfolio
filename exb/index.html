@@ -1,223 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="icon" href="/favicon/exb.png" type="image/x-icon" />
-        <title>eXB - Building</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="icon" href="/favicon/exb.png" type="image/x-icon" />
+  <title>eXB - Building</title>
 
-        <style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap');
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-    background-color: white;
-    color: black;
-    font-family: 'JetBrains Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    overflow-y: auto;
-    position: relative;
-}
+    body {
+      background-color: white;
+      color: black;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
     #logo {
-        width: 120px;
-        height: auto;
-        margin-bottom: 20px;
+      width: 120px;
+      height: auto;
+      margin-bottom: 20px;
     }
 
     .loading-container {
-        width: 200px;
-        height: 6px;
-        background-color: #ddd;
-        border-radius: 3px;
-        overflow: hidden;
-        margin-bottom: 20px;
-        visibility: hidden;
+      width: 200px;
+      height: 6px;
+      background-color: #ddd;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      visibility: hidden;
     }
 
     .loading-fill {
-        height: 100%;
-        width: 0%;
-        background-color: black;
-        transition: width 1.5s ease-in-out;
+      height: 100%;
+      width: 0%;
+      background-color: black;
+      transition: width 1.5s ease-in-out;
     }
 
     .fail-message {
-        display: none;
-        text-align: center;
-        font-size: 0.9rem;
-        opacity: 0.7;
-        margin-top: 10px;
+      display: none;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-top: 10px;
     }
 
     .reload-icon {
-        display: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        margin-top: 10px;
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-top: 10px;
     }
 
     h1 {
-        font-size: 1rem;
-        font-weight: 400;
-        opacity: 0.7;
-        position: absolute;
-        bottom: 40px;
-        text-align: center;
+      font-size: 1rem;
+      font-weight: 400;
+      opacity: 0.7;
+      position: absolute;
+      bottom: 40px;
+      text-align: center;
     }
 
     #downloadBtn {
-        padding: 10px 20px;
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 500;
-        font-size: 1rem;
-        cursor: pointer;
-        border: 2px solid black;
-        background: white;
-        border-radius: 4px;
-        user-select: none;
-        transition: background-color 0.3s, color 0.3s;
-        margin-bottom: 20px;
-
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        color: black;
-        -webkit-tap-highlight-color: transparent;
+      padding: 10px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      border: 2px solid black;
+      background: white;
+      border-radius: 4px;
+      user-select: none;
+      transition: background-color 0.3s, color 0.3s;
+      margin-bottom: 20px;
+      appearance: none;
+      color: black;
+      -webkit-tap-highlight-color: transparent;
     }
 
     #downloadBtn:hover,
     #downloadBtn:focus,
     #downloadBtn:active {
-        background-color: black;
-        color: white;
-        outline: none;
-    }
-    #donateLink {
-        margin-top: 80px; 
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 500;
-        font-size: 1rem;
-        color: black;
-        cursor: pointer;
-        user-select: none;
-        text-decoration: none;
-        position: absolute;
-        bottom: 65px;
-        display: inline-block;
+      background-color: black;
+      color: white;
+      outline: none;
     }
 
-    #donateLink::after {
-        content: "";
-        position: absolute;
-        height: 2px;
-        background: black;
-        width: 0%;
-        left: 0;
-        bottom: -4px;
-        transition: width 0.3s ease;
+    .footer-links {
+      position: absolute;
+      bottom: 66px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    #donateLink:hover::after {
-        width: 100%;
+    .footer-link {
+      font-weight: 500;
+      font-size: 1rem;
+      color: black;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      position: relative;
     }
 
+    .footer-link::after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      background: black;
+      width: 0%;
+      left: 0;
+      bottom: -4px;
+      transition: width 0.3s ease;
+    }
 
-        </style>
-    </head>
-    <body>
+    .footer-link:hover::after {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
 
-        <img id="logo" src="/favicon/exb.png" alt="eXB Logo" />
+  <img id="logo" src="/favicon/exb.png" alt="eXB Logo" />
+  <button id="downloadBtn">Download eXB</button>
 
-        <button id="downloadBtn">Download eXB</button>
+  <div class="loading-container" id="loadingContainer">
+    <div class="loading-fill" id="loadingFill"></div>
+  </div>
 
-        <div class="loading-container" id="loadingContainer">
-            <div class="loading-fill" id="loadingFill"></div>
-        </div>
+  <div class="fail-message" id="failMessage">
+    sorry, we're having difficulties downloading <br> this amazing product. try reloading or come back later.
+  </div>
 
-        <div class="fail-message" id="failMessage">
-            sorry, we're having difficulties downloading <br> this amazing product. try reloading or come back later.
-        </div>
+  <div class="reload-icon" id="reloadIcon">⟳</div>
 
-        <div class="reload-icon" id="reloadIcon">⟳</div>
+  <h1>eXB being built</h1>
 
-        <h1>eXB being built</h1>
+  <div class="footer-links">
+    <a class="footer-link" href="/donate/index.html" rel="noopener noreferrer" title="Donate BTC">donate</a>
+    <a class="footer-link" href="https://github.com/ex-b" target="_blank" rel="noopener noreferrer" title="GitHub Org">github</a>
+  </div>
 
-        <a 
-                                 id="donateLink" 
-                                 href="/donate/index.html"
-                                 get="_blank" 
-                                 rel="noopener noreferrer"
-                                 title="Donate Bitcoin (BTC)"
-                                 >
-                                 Donate
-        </a>
+  <script>
+    const loadingFill = document.getElementById('loadingFill');
+    const failMessage = document.getElementById('failMessage');
+    const reloadIcon = document.getElementById('reloadIcon');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const downloadBtn = document.getElementById('downloadBtn');
 
-            <script>
-                const loadingFill = document.getElementById('loadingFill');
-                const failMessage = document.getElementById('failMessage');
-                const reloadIcon = document.getElementById('reloadIcon');
-                const loadingContainer = document.getElementById('loadingContainer');
-                const downloadBtn = document.getElementById('downloadBtn');
+    function getRandomDuration(min = 3, max = 6) {
+      return Math.random() * (max - min) + min;
+    }
 
-                function getRandomDuration(min = 3, max = 6) {
-                    return Math.random() * (max - min) + min;
-                }
+    function getRandomProgress(min = 40, max = 85) {
+      return Math.random() * (max - min) + min;
+    }
 
-                function getRandomProgress(min = 40, max = 85) {
-                    return Math.random() * (max - min) + min;
-                }
+    function resetUI() {
+      loadingFill.style.width = '0%';
+      failMessage.style.display = 'none';
+      reloadIcon.style.display = 'none';
+      loadingContainer.style.visibility = 'visible';
+    }
 
-                function resetUI() {
-                    loadingFill.style.width = '0%';
-                    failMessage.style.display = 'none';
-                    reloadIcon.style.display = 'none';
-                    loadingContainer.style.visibility = 'visible';
-                }
+    function startLoadingBar() {
+      resetUI();
+      const target = getRandomProgress();
+      const duration = getRandomDuration();
 
-                function startLoadingBar() {
-                    resetUI();
+      loadingFill.style.transition = `width ${duration}s ease-in-out`;
+      loadingFill.style.width = `${target}%`;
 
-                    const target = getRandomProgress();
-                    const duration = getRandomDuration();
+      setTimeout(() => {
+        loadingContainer.style.visibility = 'hidden';
+        failMessage.style.display = 'block';
+        reloadIcon.style.display = 'block';
+      }, duration * 1000 + 500);
+    }
 
-                    loadingFill.style.transition = `width ${duration}s ease-in-out`;
-                    loadingFill.style.width = `${target}%`;
+    reloadIcon.addEventListener('click', () => {
+      setTimeout(() => startLoadingBar(), 300);
+    });
 
-                    setTimeout(() => {
-                        loadingContainer.style.visibility = 'hidden';
-                        failMessage.style.display = 'block';
-                        reloadIcon.style.display = 'block';
-                    }, duration * 1000 + 500);
-                }
+    downloadBtn.addEventListener('click', () => {
+      downloadBtn.style.display = 'none';
+      startLoadingBar();
+    });
 
-                reloadIcon.addEventListener('click', () => {
-                    setTimeout(() => {
-                        startLoadingBar();
-                    }, 300);
-                });
+    window.onload = () => {
+      downloadBtn.style.display = 'inline-block';
+      loadingContainer.style.visibility = 'hidden';
+      failMessage.style.display = 'none';
+      reloadIcon.style.display = 'none';
+    };
+  </script>
 
-                downloadBtn.addEventListener('click', () => {
-                    downloadBtn.style.display = 'none';
-                    startLoadingBar();
-                });
-
-                window.onload = () => {
-                    downloadBtn.style.display = 'inline-block';
-                    loadingContainer.style.visibility = 'hidden';
-                    failMessage.style.display = 'none';
-                    reloadIcon.style.display = 'none';
-                };
-            </script>
-
-    </body>
+</body>
 </html>
+
 
