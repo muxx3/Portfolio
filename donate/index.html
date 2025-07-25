@@ -18,10 +18,29 @@ body {
     overflow-y: auto;
 }
 
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
 #logo {
-    width: 100px;
-    height: auto;
-    margin-bottom: 20px;
+  width: 100px;
+  height: auto;
+  margin-bottom: 0;
+  animation: bob 2.5s ease-in-out infinite;
+  z-index: 2;
+  position: relative;
+}
+
+.shadow-circle {
+  width: 60px;
+  height: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  filter: blur(2px);
+  margin-bottom: 20px;
+  margin-top: -10px;
+  z-index: 1;
 }
 
 h1 {
@@ -48,6 +67,8 @@ canvas {
 </head>
 <body>
     <img id="logo" src="/favicon/donoheart.png" alt="<3" width="100" />
+    <div class="shadow-circle"></div>
+
 <h2>Donate Bitcoin</h2>
     <p>Scan in your wallet app and send <strong>BTC</strong> to:</p>
     <div class="address">bc1qdyx9vggwvgya58503qs2yrphq46vzx76hdhkcs</div>
